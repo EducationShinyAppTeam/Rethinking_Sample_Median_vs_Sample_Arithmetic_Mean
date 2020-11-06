@@ -1,31 +1,34 @@
-# Load Packages
+# Load Packages ----
 library(shiny)
 library(shinyBS)
+library(shinydashboard)
 library(boastUtils)
+library(ggplot2)
 
-# App Meta Data----------------------------------------------------------------
-APP_TITLE  <<- "[App Template]"
-APP_DESCP  <<- paste(
-  "Description of the app",
-  "use multiple lines to keep the description legible."
-)
-# End App Meta Data------------------------------------------------------------
-
-# Load additional dependencies and setup functions
+# Load additional dependencies and setup functions----
 # source("global.R")
+
+# Define global constants, functions, and data ----
+freedManDiaconis <- function(x) {
+  2 * IQR(x) / length(x)^(1/3)
+}
 
 # Define UI for App ----
 ui <- list(
   ## Create the app page ----
   dashboardPage(
-    skin = "blue",
+    skin = "yellow",
     ### Create the app header ----
     dashboardHeader(
-      title = "App Template", # You may use a shortened form of the title here
+      title = "Median vs. Mean", # You may use a shortened form of the title here
       tags$li(class = "dropdown", actionLink("info", icon("info"))),
-      tags$li(class = "dropdown",
-              tags$a(href='https://github.com/EducationShinyAppTeam/BOAST',
-                     icon("github"))),
+      tags$li(
+        class = "dropdown",
+        tags$a(
+          target = "_blank", icon("comments"),
+          href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Rethinking_Sample_Median_vs_Sample_Arithmetic_Mean"
+        )
+      ),
       tags$li(class = "dropdown",
               tags$a(href='https://shinyapps.science.psu.edu/',
                      icon("home")))
@@ -35,10 +38,9 @@ ui <- list(
       sidebarMenu(
         id = "pages",
         menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
-        menuItem("Prerequisites", tabName = "Prerequisites", icon = icon("book")),
-        menuItem("Explore", tabName = "Explore", icon = icon("wpexplorer")),
-        menuItem("Challenge", tabName = "Challenge", icon = icon("gears")),
-        menuItem("Game", tabName = "Game", icon = icon("gamepad")),
+        menuItem("Sample Median", tabName = "median", icon = icon("wpexplorer")),
+        menuItem("Sample Arithmetic Mean", tabName = "sam", icon = icon("wpexplorer")),
+        menuItem("Skewness", tabName = "skewness", icon = icon("gears")),
         menuItem("References", tabName = "References", icon = icon("leanpub"))
       ),
       tags$div(
@@ -53,19 +55,24 @@ ui <- list(
         tabItem(
           tabName = "Overview",
           withMathJax(),
-          h1("Sample Application for BOAST Apps"), # This should be the full name.
-          p("This is a sample Shiny application for BOAST."),
+          h1("Rethinking the Sample Median vs Sample Arithmetic Mean"),
+          p("An app for exploring and highlighting the differences between the
+            Sample Median and Sample Arithmetic Mean."),
+          p("More text to come"),
           h2("Instructions"),
-          p("This information will change depending on what you want to do."),
+          p("To get the most out of this app, we recommend that do the following:"),
           tags$ol(
-            tags$li("Review any prerequiste ideas using the Prerequistes tab."),
-            tags$li("Explore the Exploration Tab."),
-            tags$li("Challenge yourself."),
-            tags$li("Play the game to test how far you've come.")
+            tags$li("(Re-) Familiarize yourself with the ",
+                    em("sample median"),
+                    "from a quantitative reasoning perspective."),
+            tags$li("(Re-) Familiarize yourself with the ",
+                    em("sample arithmetic mean"),
+                    "from a quantitative reasoning perspective."),
+            tags$li("Investigate the role that skewness has on both statistics.")
           ),
           ##### Go Button--location will depend on your goals ----
           div(
-            style = "text-align: center",
+            style = "text-align: center;",
             bsButton(
               inputId = "go1",
               label = "GO!",
@@ -80,101 +87,177 @@ ui <- list(
           h2("Acknowledgements"),
           p(
             "This version of the app was developed and coded by Neil J.
-            Hatfield  and Robert P. Carey, III.",
-            br(),
-            "We would like to extend a special thanks to the Shiny Program
-            Students.",
+            Hatfield.",
             br(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 5/13/2020 by NJH.")
+            div(class = "updated", "Last Update: 11/5/2020 by NJH.")
           )
         ),
-        #### Set up the Prerequisites Page ----
+        #### Median Page ----
         tabItem(
-          tabName = "Prerequisites",
+          tabName = "median",
           withMathJax(),
-          h2("Prerequisites"),
-          p("In order to get the most out of this app, please review the
-            following:"),
-          tags$ul(
-            tags$li("Pre-req 1"),
-            tags$li("Pre-req 2"),
-            tags$li("Pre-req 3"),
-            tags$li("Pre-req 4")
-          ),
-          p("Notice the use of an unordered list; users can move through the
-            list any way they wish."),
-          box(
-            title = strong("Null Hypothesis Significance Tests (NHSTs)"),
-            status = "primary",
-            collapsible = TRUE,
-            collapsed = TRUE,
-            width = '100%',
-            "In the Confirmatory Data Analysis tradition, null hypothesis
-            significance tests serve as a critical tool to confirm that a
-            particular theoretical model describes our data and to make a
-            generalization from our sample to the broader population
-            (i.e., make an inference). The null hypothesis often reflects the
-            simpler of two models (e.g., 'no statistical difference',
-            'there is an additive difference of 1', etc.) that we will use to
-            build a sampling distribution for our chosen estimator. These
-            methods let us test whether our sample data are consistent with this
-            simple model (null hypothesis)."
-          ),
-          box(
-            title = strong(tags$em("p"), "-values"),
-            status = "primary",
-            collapsible = TRUE,
-            collapsed = FALSE,
-            width = '100%',
-            "The probability that our selected estimator takes on a value at
-            least as extreme as what we observed given our null hypothesis. If
-            we were to carry out our study infinitely many times and the null
-            hypothesis accurately modeled what we're studying, then we would
-            expect for our estimator to produce a value at least as extreme as
-            what we have seen 100*(p-value)% of the time. The larger the
-            p-value, the more often we would expect our estimator to take on a
-            value at least as extreme as what we've seen; the smaller, the less
-            often."
-          )
+          h2("Explore the ", em("Sample Median")),
+          p("More information to come."),
+          p("Focus on the median from a QR perspective."),
         ),
-        #### Note: you must have at least one of the following pages. You might
-        #### have more than one type and/or more than one of the same type. This
-        #### will be up to you and the goals for your app.
-        #### Set up an Explore Page
         tabItem(
-          tabName = "Explore",
+          tabName = "sam",
           withMathJax(),
-          h2("Explore the Concept"),
-          p("This page should include something for the user to do, the more
-            active and engaging, the better. The purpose of this page is to help
-            the user build a productive understanding of the concept your app
-            is dedicated to."),
-          p("Common elements include graphs, sliders, buttons, etc."),
-          p("The following comes from the NHST Caveats App:"),
+          h2("Explore the ", em("Sample Arithmetic Mean")),
+          p("More information to come."),
+          p("Focus on the median from a QR prespective."),
+          p("Spend some time on the Fallacy perspective.")
         ),
         #### Set up a Challenge Page ----
         tabItem(
-          tabName = "Challenge",
+          tabName = "skewness",
           withMathJax(),
-          h2("Challenge Yourself"),
-          p("The general intent of a Challenge page is to have the user take
-            what they learned in an Exploration and apply that knowledge in new
-            contexts/situations. In essence, to have them challenge their
-            understanding by testing themselves."),
-          p("What this page looks like will be up to you. Something you might
-            consider is to re-create the tools of the Exploration page and then
-            a list of questions for the user to then answer.")
-        ),
-        #### Set up a Game Page ----
-        tabItem(
-          tabName = "Game",
-          withMathJax(),
-          h2("Practice/Test Yourself with [Type of Game]"),
-          p("On this type of tab, you'll set up a game for the user to play.
-            Game types include Tic-Tac-Toe, Matching, and a version Hangman to
-            name a few. If you have ideas for new game type, please let us know.")
+          h2("The Role of Skewness"),
+          p("Skewness is an aspect of the underlying stochastic process that
+            generated our data which has an important role. We can think about
+            skewness as telling us in which direction to anticipate outliers;
+            towards values which are larger than the Expected Value, towards
+            values which are smaller than the Expected Value, or in both directions.
+            Over the years, we have come up with ways to measure skewness with
+            positive values indicating to look towards values larger while negative
+            values send us looking at smaller values. A skewness of zero indicates
+            that we should check out both directions."),
+          box(
+            title = "A Note about Left/Right Skewness (They're bad!)",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = 12,
+            p("We want to take brief moment and talk about the language we use
+              to characterize skewness, especially as related to data
+              visualizations. A lot of people will often use the terms 'left
+              skewed'/'long left tail' and 'right skewed'/'long right tail'. ",
+              strong("You should avoid these terms like they are carriers of the
+                     corona virius and you're about to go see a beloved, ederly
+                     family member/friend. ")),
+            p("There are several problems with these phrases which often lead
+              people to making mistakes (e.g., 'left skewed' means the mound is
+              to the left). Two important issues are 1) 'left'/'right' don't
+              connect to any of our measures of skewness (what's a 'left' number?),
+              and 2) 'left'/'right' don't work in all cases. Here is a histogram
+              that is positively skewed (outliers appear to be larger than the
+              main modal clump's values) but there's nothing 'right skewed' about
+              the graph."),
+            div(
+              style = "text-align: center;",
+              plotOutput(
+                outputId = "leftRightBad",
+                width = "50%",
+                height = "250px"
+              ),
+              tags$script(HTML(
+                "$(document).ready(function() {
+                document.getElementById('leftRightBad').setAttribute('aria-label',
+                `This plot highlights that using the terms 'left' and 'right' to
+                describe skewness fail to work in many cases. Use the terms
+                'negative' and 'positive' instead.`)
+                })"
+              ))
+            ),
+            p("We will only use the terms 'negative', 'positive', or 'no'/
+                'symmetric' when referring to skewness.")
+          ),
+          p(
+            "When people set up the false competition between the ",
+            em("sample median"), " and ", em("sample arithmetic mean"),
+            " they often bring up the following refrain:"
+          ),
+          tags$blockquote(
+          "If the data are skewed right (positively), the mean is bigger
+          than the median. If the data are left (negatively) skewed, the mean is
+          less than the median."
+          ),
+          p(
+            "Many times textbook authors and instructors make this statement and
+            people treat the statement as a fact of law. The problem is that this
+            statement is...", strong("WRONG! "), "Think of the above statement
+            as more of a loose, general guideline that is meant to be broken like
+            the i-before-e-except-after-c 'rule' in English grammar, which more
+            words break than follow."
+          ),
+          p("We've complied a set of examples--some real, some simulated--which
+            all break this false rule. Explore these examples below."),
+          br(),
+          fluidRow(
+            column(
+              width = 4,
+              wellPanel(
+                h3("Data Set"),
+                selectInput(
+                  inputId = "dataSet",
+                  label = "Select a data set",
+                  choices = c(
+                    "Tooth agenisis",
+                    "Gestational age",
+                    "others"
+                  )
+                ),
+                p("context"),
+                uiOutput("dataContext")
+              )
+            ),
+            column(
+              width = 8,
+              p("histogram"),
+              plotOutput("dataPlots")
+            )
+          ),
+          hr(),
+          box(
+            title = "Textbooks that get this wrong",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = 6,
+            p("Here are few textbooks that get this wrong; that is, present this
+              as a true law of Statistics."),
+            tags$ul(
+              tags$li(
+                tags$cite("Statistics: Unlocking the Power of Data"),
+                " (2nd ed.) by Lock, Lock, Lock Morgan, Lock, and Lock"
+              ),
+              tags$li(
+                tags$cite("Introduction to Statistical Investigations"),
+                " by Tintle, Chance, Cobb, Rossman, Roy, Swanson, and VanderStoep"
+              ),
+              tags$li(
+                tags$cite("Workshop Statistics: Discovery with Data"),
+                " (3rd ed.) by Rossman and Chance"
+              ),
+              tags$li(
+                tags$cite("Introduction to the Practice of Statitics"),
+                " (7th ed.) by Moore, McCabe, and Craig"
+              )
+            )
+          ),
+          box(
+            title = "Textbooks that essentially get this wrong",
+            collapsible = TRUE,
+            collapsed = TRUE,
+            width = 6,
+            p("The following textbooks include the word 'generally' when they
+              first introduce this false law. However, they do not provide any
+              counter-examples and they often continue on as if 'generally' was
+              never there."),
+            tags$ul(
+              tags$li(
+                tags$cite("Introduction to Statistics & Data Analysis"),
+                " (5th ed.) by Peck, Olsen, and Devore"
+              ),
+              tags$li(
+                tags$cite("Statistics: The Art and Science of Learning from Data"),
+                " (4th ed.) by Agresti, Franklin, and Klingenberg"
+              )
+            )
+          ),
+          p("If you have more data sets which serve as counter-examples or know
+            of any textbooks which get this issue correct, please feel free to
+            send the information on to us.")
         ),
         #### Set up the References Page ----
         tabItem(
@@ -195,7 +278,34 @@ ui <- list(
 
 # Define server logic ----
 server <- function(input, output, session) {
-  
+
+  ## Left-Right Skew Plot ----
+  output$leftRightBad <- renderPlot({
+    ggplot(
+      data = data.frame(
+        val = rchisq(500, 5)
+      )
+    ) +
+      geom_histogram(
+        mapping = aes(y = val),
+        fill = boastPalette[6],
+        col = "black",
+        closed = "left",
+        binwidth = freedManDiaconis
+      ) +
+      labs(
+        title = "Positive Skewed Histogram",
+        x = "Frequency",
+        y = "Value"
+      ) +
+      theme_bw() +
+      theme(
+        plot.caption = element_text(size = 18),
+        text = element_text(size = 18),
+        axis.title = element_text(size = 16)
+      )
+  })
+
 }
 
 # Boast App Call ----

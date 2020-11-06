@@ -1,16 +1,15 @@
-Title: Sample App - A Lengthy Title
-ShortName: Sample App
-Date: 2020-12-31
+Title: Rethinking the Sample Median vs Sample Arithmetic Mean
+ShortName: Median vs Mean
+Date: 2020-11-05
 Authors@R: c(
-    person("Lorem", "Ipsum", email = "lorem.ipsum@psu.edu", role = c("aut", "cre")),
-    person("Ang", "Li", email = "ang.li@psu.edu", role = c("ctb"))
+    person("Neil", "Hatfield", email = "neil.hatfield@psu.edu", role = c("aut", "cre"))
   )
-Chapter: Sample Chapter
-Description: This app is focused on the common types of xyz.
-LearningObjectives: The student is expected to learn about xyz and the effects of abc.
+Chapter: Data Description
+Description: An app for exploring and highlighting the differences between the Sample Median and Sample Arithmetic Mean
+LearningObjectives: c("The student will understand that positioning the sample median and sample arithmetic mean aginst one another is a fallacy.","The student will learn that the visual skewness of a data visualization and the relative sizes of the values of the sample median and sample arithmetic mean can be misleading.","The student will learn that the adage 'right/positive skew means the mean is greater than the median' and it's complement are not universally true.")
 DisplayMode: Normal
-URL: https://psu-eberly.shinyapps.io/Sample_App
-BugReports: https://github.com/EducationShinyAppTeam/Sample_App/issues
+URL: https://psu-eberly.shinyapps.io/Rethinking_Sample_Median_vs_Sample_Arithmetic_Mean
+BugReports: https://github.com/EducationShinyAppTeam/Rethinking_Sample_Median_vs_Sample_Arithmetic_Mean/issues
 License: CC-BY-NC-SA-4.0
-Tags: simulation
+Tags: simulation, real data
 Type: Shiny
